@@ -325,7 +325,8 @@ Validation is the bottleneck. MigrateIQ removes it.
  v3.0 — Self-healing fix loop (auto-apply + verify)
 
 <img width="577" height="176" alt="image" src="https://github.com/user-attachments/assets/8eb6aa4b-a023-43bc-b9cb-9fbd0068b75e" />
-🎯 Award Categories Targeted
+
+🌟 Key Innovations
 🏆 Best Overall Agent — End-to-end production-ready reasoning system
 🧠 Best Reasoning Agent — 9-step deterministic multi-agent reasoning
 💡 Best Use of IQ Tools — Deep Foundry IQ grounded retrieval integration
@@ -344,4 +345,6 @@ MIT License — built openly to inspire the next generation of mainframe moderni
 
 Making the world's legacy code safe to modernize — one validated program at a time.
 
+Built for Microsoft Agents League Hackathon 2026 — 
+spanning Reasoning, IQ Tools, and Accessibility tracks.
 </div> ```
