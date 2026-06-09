@@ -1,0 +1,65 @@
+# User-facing message templates.
+#
+# Loaded by services/orchestrator.py and rendered by handlers via
+# get_orchestrator().get_message(key, **kwargs). Placeholders use Python
+# str.format syntax.
+#
+# Keys are dot-paths, e.g. "usage.copy" -> messages.usage.copy.
+# Extracted from prompts/WORKFLOW_ORCHESTRATION_SKILL.md (verbatim).
+
+messages:
+
+  usage:
+    copy:      "⚠️ Usage: `copy <baseline>`"
+    load:      "⚠️ Usage: `load <baseline>`"
+    branch:    "⚠️ Usage: `branch <baseline>`"
+    run:       "⚠️ Usage: `run <baseline>`"
+    unload:    "⚠️ Usage: `unload <baseline>`"
+    compare:   "⚠️ Usage: `compare <baseline>`"
+    report:    "⚠️ Usage: `report <baseline>`"
+    finalize:  "⚠️ Usage: `finalize <baseline>`"
+    validate:  "⚠️ Usage: `validate <baseline>`"
+    reporting: "⚠️ Usage: `reporting <baseline>`"
+    status:    "⚠️ Usage: `status <baseline>`"
+    reset:     "⚠️ Usage: `reset <baseline>`"
+
+  list:
+    empty:  "📋 No sessions found."
+    header: "# 📋 All Sessions\n"
+
+  reset:
+    success: "🔄 Reset all steps for `{baseline}`"
+
+  not_implemented:
+    report:   "🔄 **Step 7: Generate Report**\n\nGenerating report for `{baseline}`...\n\n⚠️ *Not implemented yet*"
+    finalize: "🔄 **Step 8: Finalize & Deliver**\n\nFinalizing `{baseline}`...\n\n⚠️ *Not implemented yet*"
+    validate: "🚀 **Full Validation**\n\nRunning all steps for `{baseline}`...\n\n⚠️ *Not implemented yet*"
+
+  copy:
+    success: |-
+      ✅ **Step 1: Complete!**
+
+      `{baseline}` ready for validation!
+
+      **What was done:**
+      • ✅ Baseline folder copied
+      • ✅ SYSOUT created
+      • ✅ .env file placed
+      • ✅ Input files copied
+    failure: "❌ **Step 1: Failed**\n\n{error}"
+
+  load:
+    starting: "🔄 **Step 2: Load to DB**\n\nLoading `{baseline}`...\n\n⏳ Please wait..."
+    success:  "✅ **Step 2: Complete**\n\n`{baseline}` loaded to DB!"
+    failure:  "❌ **Step 2: Failed**\n\n{error}"
+
+  unload:
+    starting: "🔄 **Step 5: Unload from DB**\n\nUnloading `{baseline}`...\n\n⏳ Please wait..."
+    success:  "✅ **Step 5: Complete**\n\n`{baseline}` unloaded from DB!"
+    failure:  "❌ **Step 5: Failed**\n\n{error}"
+
+  branch:
+    starting: "🔄 **Step 3a: Create Branch**\n\nCreating branch for `{baseline}`...\n\n⏳ Please wait..."
+
+  compare:
+    word_popup_note: "📄 **Note:** A Word document popup may appear. If it does, please set the security label and save it manually."

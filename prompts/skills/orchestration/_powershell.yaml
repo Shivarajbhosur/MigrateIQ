@@ -1,0 +1,40 @@
+# PowerShell command catalog.
+#
+# Project-specific cmdlets invoked by tools/powershell_tools.py.
+# Switching client/project = edit this block (no Python changes required).
+# Each entry is rendered as: "<cmdlet> <args_template>" with {baseline}
+# substituted at call time, then executed via `pwsh -Command "..."`.
+#
+# Extracted from prompts/WORKFLOW_ORCHESTRATION_SKILL.md (verbatim).
+
+powershell_commands:
+
+  - id: new_sysout
+    cmdlet: "New-Sysout"
+    args_template: "{baseline}"
+    step: "1b"
+    purpose: "Create SYSOUT output file"
+
+  - id: new_env
+    cmdlet: "New-Env"
+    args_template: "{baseline}"
+    step: "1c"
+    purpose: "Create .env file"
+
+  - id: copy_input
+    cmdlet: "Copy-Input"
+    args_template: "{baseline}"
+    step: "1d"
+    purpose: "Copy input files to working folder"
+
+  - id: load_baseline_data
+    cmdlet: "load-BaselineData"
+    args_template: "{baseline}"
+    step: "2"
+    purpose: "Load baseline data into the database"
+
+  - id: unload_baseline_data
+    cmdlet: "unload-BaselineData"
+    args_template: "{baseline}"
+    step: "5"
+    purpose: "Unload baseline data from the database"

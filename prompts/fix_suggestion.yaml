@@ -1,0 +1,463 @@
+# ============================================================================
+# FIX SUGGESTION PROMPTS
+# ============================================================================
+# Prompt templates for AI analysis and fix suggestion.
+# Used with: prompts/COBOL_TO_CSHARP_SKILL.md
+# ============================================================================
+
+skill_file: "prompts/COBOL_TO_CSHARP_SKILL.md"
+max_tokens: 4096
+temperature: 0.2
+
+# ============================================================================
+# PROMPT: Analyze Runtime Error
+# ============================================================================
+analyze_runtime_error:
+  description: "Analyze a runtime error and suggest a fix"
+  template: |
+    ## Task
+    Analyze the following runtime error and suggest a fix to make the C# code match the COBOL behavior.
+
+    ## Error Information
+    **Program Name:** {program_name}
+    **Baseline:** {baseline_name}
+    **Error Type:** Runtime Error (Program Failed to Execute)
+    **Exit Code:** {exit_code}
+
+    **Error Message:**
+    ```
+    {error_message}
+    ```
+
+    {stack_trace_section}
+
+    ## COBOL Source Code (Source of Truth)
+    **File:** {cobol_file_path}
+    ```cobol
+    {cobol_code}
+    ```
+
+    ## C# Code (To Fix)
+    **File:** {csharp_file_path}
+    ```csharp
+    {csharp_code}
+    ```
+
+    {csharp_record_section}
+
+    {similar_fixes_section}
+
+    {previous_attempts_section}
+
+    ## Instructions
+    1. Analyze the error message and identify where it occurs in the C# code
+    2. Find the corresponding logic in the COBOL source
+    3. Compare COBOL vs C# and identify the mismatch
+    4. Suggest a specific fix with exact code changes
+    5. Assign a confidence level based on how certain you are
+
+    ## CRITICAL RULES - MUST FOLLOW
+    ## CRITICAL RULES - MUST FOLLOW
+    - **DO NOT add extra null checks, if conditions, or defensive coding**
+    - **C# code must MIRROR the COBOL logic exactly - nothing more, nothing less**
+    - **COBOL is the source of truth - if COBOL doesn't check for null, C# shouldn't either**
+    - **Look for TEST BUG comments, obvious mistakes, or code that doesn't match COBOL**
+    - **If C# has extra/wrong code, suggest REMOVING it and using the COBOL equivalent**
+    - **The fix should make C# behave EXACTLY like COBOL, not "safer"**
+    - **Original code should show the ACTUAL buggy code from the C# file**
+    - **Suggested fix should show what COBOL does - simple, direct translation**
+    - **DO NOT INVENT CODE - only suggest code that exists in COBOL**
+    - **DO NOT add default values, initializations, or fields that COBOL doesn't set**
+    - **If COBOL only sets 3 fields, C# should only set 3 fields - NOT MORE**
+    - **Check COBOL line by line - C# must have exact same number of operations**
+
+    ## Example of WRONG vs CORRECT Fix
+    **WRONG (Don't suggest this):**
+    ```csharp
+    if (testNull != null) 
+        pplpltpt.Lopnr = testNull.Trim();
+    else
+        pplpltpt.Lopnr = string.Empty;
+    ```
+
+    **CORRECT (Match COBOL exactly):**
+    ```csharp
+    // COBOL: MOVE PPL035-LOPNR TO PPLPLTPT-LOPNR
+    pplpltpt.Lopnr = ppl035Area.Lopnr;
+    ```
+    ## Example 2: DO NOT ADD EXTRA CODE
+    **COBOL sets 3 fields:**
+    ```cobol
+    MOVE PPL035-UTF-DATE TO W-TIMESTAMP-DATE
+    MOVE WS-TT TO W-TIMESTAMP-TT
+    MOVE WS-MM TO W-TIMESTAMP-MM
+    MOVE W-TIMESTAMP TO PPLPLTPT-SUTFTIDP
+    ```
+
+    **WRONG (Adding extra fields not in COBOL):**
+    ```csharp
+    wTimestamp.TimestampDate = ppl035Area.UtfDate;
+    wTimestamp.TimestampTt = avvdttmm.Tt;
+    wTimestamp.TimestampMm = avvdttmm.Mm;
+    wTimestamp.TimestampSek = "00";      // ❌ NOT IN COBOL!
+    wTimestamp.TimestampMsek = "000000"; // ❌ NOT IN COBOL!
+    ```
+
+    **CORRECT (Exact COBOL translation):**
+    ```csharp
+    // COBOL sets exactly 3 fields, so C# sets exactly 3 fields
+    wTimestamp.TimestampDate = ppl035Area.UtfDate;
+    wTimestamp.TimestampTt = avvdttmm.Tt;
+    wTimestamp.TimestampMm = avvdttmm.Mm;
+    pplpltpt.Sutftidp = new DateType(wTimestamp, "yyyy-MM-dd-HH.mm.ss.ffffff");
+    ```
+
+    ## Required Output Format
+    Provide your response in this exact format:
+
+    ### Root Cause
+    [One sentence explaining why the error occurs]
+
+    ### Analysis
+    [Detailed comparison of COBOL logic vs C# implementation]
+
+    ### File to Fix
+    [Exact file path]
+
+    ### Line Number
+    [Line number if identifiable, or "N/A"]
+
+    ### Original Code
+    ```csharp
+    [Current code that is wrong]
+    ```
+
+    ### Suggested Fix
+    ```csharp
+    [Corrected code]
+    ```
+
+    ### Confidence
+    [0-100]%
+
+    ### Fix Type
+    [Category: null_check, decimal_precision, string_padding, date_format, array_index, rounding, logic_mismatch, other]
+
+    ### Justification
+    [Reference to COBOL source that proves the fix is correct]
+
+    ### Verification
+    [How to test that this fix works]
+
+    ### Notes
+    [Any side effects, edge cases, or additional considerations]
+
+# ============================================================================
+# PROMPT: Analyze Output Difference
+# ============================================================================
+analyze_output_diff:
+  description: "Analyze output differences and suggest a fix"
+  template: |
+    ## Task
+    Analyze the following output differences and suggest a fix to make the C# output match the COBOL output exactly.
+
+    ## Error Information
+    **Program Name:** {program_name}
+    **Baseline:** {baseline_name}
+    **Error Type:** Output Comparison Failed (Diff Found)
+
+    **Difference Summary:**
+    ```
+    {diff_details}
+    ```
+
+    **Failed Files:**
+    {failed_files}
+
+    ## COBOL Source Code (Source of Truth)
+    **File:** {cobol_file_path}
+    ```cobol
+    {cobol_code}
+    ```
+
+    ## C# Code (To Fix)
+    **File:** {csharp_file_path}
+    ```csharp
+    {csharp_code}
+    ```
+
+    {csharp_record_section}
+
+    {similar_fixes_section}
+
+    {previous_attempts_section}
+
+    ## Instructions
+    1. Analyze the output differences - what is different between expected and actual?
+    2. Identify which part of the C# code produces this output
+    3. Find the corresponding logic in the COBOL source
+    4. Compare COBOL vs C# and identify why output differs
+    5. Suggest a specific fix with exact code changes
+    6. Assign a confidence level based on how certain you are
+
+    ## Required Output Format
+    Provide your response in this exact format:
+
+    ### Root Cause
+    [One sentence explaining why the output differs]
+
+    ### Analysis
+    [Detailed comparison of COBOL logic vs C# implementation, focusing on output generation]
+
+    ### File to Fix
+    [Exact file path]
+
+    ### Line Number
+    [Line number if identifiable, or "N/A"]
+
+    ### Original Code
+    ```csharp
+    [Current code that produces wrong output]
+    ```
+
+    ### Suggested Fix
+    ```csharp
+    [Corrected code that will produce matching output]
+    ```
+
+    ### Confidence
+    [0-100]%
+
+    ### Fix Type
+    [Category: null_check, decimal_precision, string_padding, date_format, array_index, rounding, logic_mismatch, output_format, other]
+
+    ### Justification
+    [Reference to COBOL source that proves the fix is correct]
+
+    ### Verification
+    [How to verify the output now matches]
+
+    ### Notes
+    [Any side effects, edge cases, or additional considerations]
+
+# ============================================================================
+# PROMPT: Retry After Failed Fix
+# ============================================================================
+retry_analysis:
+  description: "Re-analyze after a failed fix attempt"
+  template: |
+    ## Task
+    The previous fix attempt did not resolve the issue. Analyze the new error and suggest a different fix.
+
+    ## Current Attempt
+    **Attempt Number:** {attempt_number} of {max_attempts}
+    **Program Name:** {program_name}
+    **Baseline:** {baseline_name}
+
+    ## Previous Failed Attempts
+    {previous_attempts_details}
+
+    ## Current Error
+    **Error Message:**
+    ```
+    {error_message}
+    ```
+
+    {stack_trace_section}
+
+    ## COBOL Source Code (Source of Truth)
+    **File:** {cobol_file_path}
+    ```cobol
+    {cobol_code}
+    ```
+
+    ## C# Code (Current State After Previous Fixes)
+    **File:** {csharp_file_path}
+    ```csharp
+    {csharp_code}
+    ```
+
+    {similar_fixes_section}
+
+    ## Instructions
+    1. Review what was tried before and why it failed
+    2. Analyze the NEW error message - is it the same issue or a different one?
+    3. If same issue: try a DIFFERENT approach
+    4. If new issue: the previous fix may have worked partially, now fix the new issue
+    5. Consider if multiple changes are needed together
+    6. Be more thorough - check edge cases, null conditions, data types
+
+    ## CRITICAL RULES - MUST FOLLOW
+    - **DO NOT add extra null checks, if conditions, or defensive coding**
+    - **C# code must MIRROR the COBOL logic exactly - nothing more, nothing less**
+    - **COBOL is the source of truth - if COBOL doesn't check for null, C# shouldn't either**
+    - **Look for TEST BUG comments, obvious mistakes, or code that doesn't match COBOL**
+    - **If C# has extra/wrong code, suggest REMOVING it and using the COBOL equivalent**
+    - **The fix should make C# behave EXACTLY like COBOL, not "safer"**
+    - **Original code should show the ACTUAL buggy code from the C# file**
+    - **Suggested fix should show what COBOL does - simple, direct translation**
+    - **DO NOT INVENT CODE - only suggest code that exists in COBOL**
+    - **DO NOT add default values, initializations, or fields that COBOL doesn't set**
+    - **If COBOL only sets 3 fields, C# should only set 3 fields - NOT MORE**
+    - **Check COBOL line by line - C# must have exact same number of operations**
+
+    ## Required Output Format
+    Provide your response in this exact format:
+
+    ### What Changed
+    [Explain if this is the same error or a new error after the previous fix]
+
+    ### Root Cause
+    [One sentence explaining the current error]
+
+    ### Analysis
+    [Detailed analysis, noting what was tried before and why this approach is different]
+
+    ### File to Fix
+    [Exact file path]
+
+    ### Line Number
+    [Line number if identifiable, or "N/A"]
+
+    ### Original Code
+    ```csharp
+    [Current code that is wrong]
+    ```
+
+    ### Suggested Fix
+    ```csharp
+    [Corrected code - try a DIFFERENT approach than before]
+    ```
+
+    ### Confidence
+    [0-100]%
+
+    ### Fix Type
+    [Category]
+
+    ### Why This Is Different
+    [Explain why this fix will work when the previous one didn't]
+
+    ### Justification
+    [Reference to COBOL source]
+
+    ### Verification
+    [How to test]
+
+    ### Notes
+    [Additional considerations]
+
+# ============================================================================
+# SECTION TEMPLATES
+# ============================================================================
+sections:
+  stack_trace:
+    condition: "stack_trace is not None"
+    template: |
+      **Stack Trace:**
+      ```
+      {stack_trace}
+      ```
+
+  csharp_record:
+    condition: "csharp_record_code is not None"
+    template: |
+      ## C# Record/Model File
+      **File:** {csharp_record_path}
+      ```csharp
+      {csharp_record_code}
+      ```
+
+  similar_fixes:
+    condition: "similar_fixes is not empty"
+    template: |
+      ## Similar Past Fixes (From Knowledge Base)
+      The following similar issues were fixed before. Use these as reference:
+
+      {similar_fixes_list}
+
+  previous_attempts:
+    condition: "attempt_number > 1"
+    template: |
+      ## Previous Fix Attempts (Did Not Work)
+      The following fixes were already tried but did not resolve the issue:
+
+      {previous_attempts_list}
+
+# ============================================================================
+# OUTPUT PARSING
+# ============================================================================
+output_parsing:
+  fields:
+    - name: "root_cause"
+      pattern: "### Root Cause\\n(.+?)\\n\\n"
+      required: true
+
+    - name: "explanation"
+      pattern: "### Analysis\\n(.+?)\\n\\n### File"
+      required: true
+
+    - name: "file_to_fix"
+      pattern: "### File to Fix\\n(.+?)\\n"
+      required: true
+
+    - name: "line_number"
+      pattern: "### Line Number\\n(.+?)\\n"
+      required: false
+      type: "int"
+
+    - name: "original_code"
+      pattern: "### Original Code\\n```csharp\\n(.+?)\\n```"
+      required: true
+
+    - name: "suggested_code"
+      pattern: "### Suggested Fix\\n```csharp\\n(.+?)\\n```"
+      required: true
+
+    - name: "confidence"
+      pattern: "### Confidence\\n(\\d+)%"
+      required: true
+      type: "int"
+
+    - name: "fix_type"
+      pattern: "### Fix Type\\n(.+?)\\n"
+      required: false
+
+    - name: "additional_notes"
+      pattern: "### Notes\\n(.+?)$"
+      required: false
+
+# ============================================================================
+# FALLBACK PROMPTS
+# ============================================================================
+fallback:
+  no_cobol:
+    template: |
+      ## Warning
+      COBOL source code is not available for program {program_name}.
+
+      Without COBOL source, I cannot verify if the C# code matches the original behavior.
+
+      **Recommendation:** Locate the COBOL source file ({program_name}.COB) and retry analysis.
+
+      **Confidence:** Below 50% for any fix suggestion without COBOL reference.
+
+  no_csharp:
+    template: |
+      ## Warning
+      C# code is not available for program {program_name}.
+
+      Cannot suggest a fix without seeing the current C# implementation.
+
+      **Recommendation:** Ensure the C# file exists at the expected location.
+
+  no_error:
+    template: |
+      ## Warning
+      No error message or diff details provided.
+
+      Please provide:
+      - The error message (for runtime errors)
+      - The diff output (for comparison failures)
+
+      Without this information, I cannot analyze the issue.

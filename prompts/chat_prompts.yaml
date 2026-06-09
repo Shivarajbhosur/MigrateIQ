@@ -1,0 +1,151 @@
+# ============================================================================
+# CHAT ASSISTANT PROMPT CONFIGURATION
+# ============================================================================
+# Prompt text lives in this file and in the linked skill files. NO prompts in
+# Python code. Switching target language requires only:
+#   1. set TARGET_LANGUAGE in .env (e.g. "java")
+#   2. add prompts/COBOL_TO_JAVA_SKILL.MD with the same structure as the C# one
+# No code changes needed.
+# ============================================================================
+
+max_tokens: 16000
+temperature: 0.0
+
+# Generic, language-agnostic skill (uses {TARGET_LANGUAGE_NAME} placeholders).
+chat_skill_file: "prompts/chat_skill.md"
+
+# Domain skill file pattern. Resolved with TARGET_LANGUAGE from .env.
+# Default: TARGET_LANGUAGE=csharp -> prompts/COBOL_TO_CSHARP_SKILL.MD
+domain_skill_pattern: "prompts/COBOL_TO_{TARGET_LANGUAGE_UPPER}_SKILL.MD"
+
+# Per-artefact size caps so we never blow the context window.
+limits:
+  cobol_main_chars: 20000
+  cobol_subprogram_chars: 4000
+  target_main_chars: 30000
+  target_record_chars: 4000
+  similar_fix_chars: 1500
+  max_subprograms: 3
+  max_similar_fixes: 3
+  history_messages: 6
+
+# ── NL detection patterns ─────────────────────────────────────────────
+# Regexes used by agents.chat_agent._extract_targets to spot program /
+# baseline IDs in user messages and history. Mirrors the orchestrator's
+# patterns in prompts/skills/orchestration/_config.yaml so both layers stay
+# in sync. Compiled case-insensitive; captures are upper-cased by the agent
+# because on-disk IDs (files, KB keys) are upper-case.
+patterns:
+  # Full baseline e.g. P02070-HPPL494P / P03085-J3021493. Group(1) is the
+  # bare program portion.
+  baseline: '\bP\d{4,6}-([A-Z]{1,6}\d{2,8}[A-Z]?)\b'
+  # Bare program e.g. HPPL486P / J3021493 / OJ011533.
+  program: '\b([A-Z]{1,6}\d{2,8}[A-Z]?)\b'
+
+# Top-level user prompt assembled by the chat agent. Empty sections collapse
+# cleanly (the agent passes "" for sections that don't apply).
+user_template: |
+  # Conversation
+  {history_section}
+
+  # Latest User Message
+  {user_message}
+
+  {detected_section}
+
+  {cobol_section}
+
+  {target_section}
+
+  {similar_section}
+
+  {snippet_section}
+
+  # Instructions
+  - Follow the rules in the system prompts.
+  - Use ONLY the context above. Do not invent code, files, or line numbers.
+  - If the user asks for "complete", "full", "entire", "all", or simply
+    requests the code for a program / file that is present above, output
+    the FULL verbatim contents of every relevant file in fenced code
+    blocks. Do NOT summarise, do NOT ask which file, do NOT say "the code
+    is too large" — just emit it. Use one fenced block per file with a
+    heading naming the file path.
+  - If essential information is missing for the user's specific request, ask
+    ONE focused follow-up question.
+  - Otherwise answer directly and completely.
+
+# Section sub-templates. The chat agent picks them up by key.
+sections:
+  detected:
+    template: |
+      # Detected Context
+      Active program: `{program_name}`
+      Active baseline: `{baseline_name}`
+
+  cobol:
+    template: |
+      # COBOL Source (source of truth)
+      **File:** `{cobol_file_path}`
+      ```cobol
+      {cobol_code}
+      ```
+      {subprograms_block}
+
+  cobol_subprogram:
+    template: |
+      ## Sub-program (called via `CALL`): `{name}`
+      **File:** `{file_path}`
+      ```cobol
+      {code}
+      ```
+
+  target:
+    template: |
+      # {TARGET_LANGUAGE_NAME} Code (to validate / fix)
+      **File:** `{target_file_path}`
+      ```{TARGET_LANGUAGE_TAG}
+      {target_code}
+      ```
+      {record_block}
+
+  target_record:
+    template: |
+      ## Record / model file: `{record_path}`
+      ```{TARGET_LANGUAGE_TAG}
+      {record_code}
+      ```
+
+  similar:
+    template: |
+      # Similar Past Fixes (Knowledge Base)
+      {similar_fixes_block}
+
+  snippet:
+    template: |
+      # User-Provided Snippet / Diff
+      ```
+      {snippet}
+      ```
+
+# Static replies used when the LLM is not configured / fails. The agent should
+# also log the underlying error for diagnostics.
+fallbacks:
+  no_api: |
+    The chat assistant is not configured. Set `ENSO_AI_API_URL` and
+    `ENSO_AI_API_KEY` in `.env`, then restart the app.
+  llm_error: |
+    The chat assistant could not reach the LLM. Please retry in a moment. If
+    the problem persists, check the logs and verify `ENSO_AI_API_URL` /
+    `ENSO_AI_API_KEY`.
+
+# Display metadata for code fences and human-readable language names.
+languages:
+  csharp:
+    name: "C#"
+    tag: "csharp"
+  java:
+    name: "Java"
+    tag: "java"
+  python:
+    name: "Python"
+    tag: "python"

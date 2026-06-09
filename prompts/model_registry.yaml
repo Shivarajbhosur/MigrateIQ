@@ -1,0 +1,74 @@
+# =============================================================================
+# Model Registry
+# -----------------------------------------------------------------------------
+# Single source of truth for every LLM the agent can call via the EnsoAI
+# (Portkey) gateway. The gateway uses a unified endpoint and the API normalises
+# all providers to OpenAI-format messages — only the `model` field changes
+# between calls.
+#
+# Edit this file (no Python changes) to:
+#   - Add / remove a model
+#   - Change which one is the default
+#   - Re-group by provider for a future UI selector
+#
+# `format` drives only the *response parsing* path in llm_service.py:
+#   openai      → choices[0].message.content   (default, gateway-normalised)
+#   anthropic   → content[0].text              (only if calling Claude direct)
+#   google      → candidates[0].content.parts  (only if calling Gemini direct)
+#
+# Since the EnsoAI gateway always speaks OpenAI on the wire, leave `format`
+# as `openai` for every gateway-routed entry.
+# =============================================================================
+
+default_model: "@openai-foundry-devgateway/gpt-4.1"
+
+providers:
+
+  openai:
+    label: "OpenAI"
+    models:
+      - id: "@openai-foundry-devgateway/gpt-4.1"
+        label: "GPT-4.1"
+        format: openai
+      - id: "@openai-foundry-devgateway/gpt-5.4"
+        label: "GPT-5.4"
+        format: openai
+      - id: "@openai-foundry-devgateway/gpt-5.5"
+        label: "GPT-5.5"
+        format: openai
+
+  anthropic:
+    label: "Anthropic Claude"
+    models:
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-opus-4-8"
+        label: "Claude Opus 4.8"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-opus-4-7"
+        label: "Claude Opus 4.7"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-opus-4-6-v1"
+        label: "Claude Opus 4.6"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-opus-4-5-20251101-v1:0"
+        label: "Claude Opus 4.5"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-sonnet-4-6"
+        label: "Claude Sonnet 4.6"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-sonnet-4-5-20250929-v1:0"
+        label: "Claude Sonnet 4.5"
+        format: openai
+      - id: "@aws-anthropic-devgateway/us.anthropic.claude-haiku-4-5-20251001-v1:0"
+        label: "Claude Haiku 4.5"
+        format: openai
+
+  google:
+    label: "Google Gemini"
+    models:
+      - id: "@google-gemini-devgateway/gemini-3-pro-preview"
+        label: "Gemini 3 Pro (preview)"
+        format: openai
+      - id: "@google-gemini-devgateway/gemini-3.1-pro-preview"
+        label: "Shivaraj"
+        format: openai
+    

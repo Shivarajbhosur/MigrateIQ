@@ -1,0 +1,1783 @@
+/* Welcome message canvas only. This does not affect backend commands. */
+html,
+body,
+#root {
+    max-width: 100% !important;
+    background:
+        linear-gradient(115deg, rgba(24, 39, 58, 0.96) 0%, rgba(23, 54, 58, 0.94) 34%, rgba(28, 34, 60, 0.94) 68%, rgba(45, 39, 68, 0.96) 100%) !important;
+    color-scheme: dark !important;
+}
+
+body {
+    min-height: 100vh !important;
+    background-attachment: fixed !important;
+}
+
+body::before {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    background:
+        linear-gradient(90deg, rgba(78, 216, 196, 0.13) 0%, rgba(78, 216, 196, 0.06) 18%, transparent 38%, rgba(136, 113, 245, 0.08) 72%, rgba(136, 113, 245, 0.15) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.012) 34%, transparent 70%),
+        repeating-linear-gradient(128deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 18px) !important;
+    opacity: 0.95 !important;
+}
+
+.group\/sidebar-wrapper,
+.flex.flex-col.h-full.w-full,
+.h-full.w-full.data-\[panel-group-direction\=vertical\]\:flex-col.flex.flex-row.flex-grow,
+.flex.flex-row.flex-grow.overflow-auto,
+.flex.w-full.h-full.flex-col.relative,
+.relative.flex.flex-col.flex-grow.overflow-y-auto,
+.flex.flex-col.flex-grow.overflow-y-auto {
+    background: transparent !important;
+}
+
+.bg-\[hsl\(var\(--background\)\)\],
+.dark\:bg-card {
+    background-color: rgba(32, 38, 50, 0.78) !important;
+}
+
+#message-composer {
+    min-height: 82px !important;
+    padding: 12px 16px !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(203, 213, 225, 0.22) !important;
+    background:
+        linear-gradient(135deg, rgba(42, 58, 78, 0.58), rgba(26, 34, 52, 0.52) 52%, rgba(43, 38, 66, 0.52)) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -18px 42px rgba(15, 23, 42, 0.18),
+        0 18px 54px rgba(8, 13, 24, 0.28),
+        0 0 46px rgba(78, 216, 196, 0.08) !important;
+    backdrop-filter: blur(24px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+}
+
+#message-composer:focus-within {
+    border-color: rgba(147, 197, 253, 0.42) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 -18px 42px rgba(15, 23, 42, 0.16),
+        0 20px 58px rgba(8, 13, 24, 0.3),
+        0 0 52px rgba(96, 165, 250, 0.16) !important;
+}
+
+#chat-input {
+    color: #e5edf7 !important;
+    caret-color: #93c5fd !important;
+    font-size: 0.98rem !important;
+    line-height: 1.35 !important;
+}
+
+#chat-input::placeholder {
+    color: rgba(226, 232, 240, 0.72) !important;
+}
+
+#message-composer button {
+    border-radius: 999px !important;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease !important;
+}
+
+#message-composer button:not(:disabled) {
+    border: 1px solid rgba(226, 232, 240, 0.16) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+#message-composer button:not(:disabled):hover {
+    background: rgba(147, 197, 253, 0.16) !important;
+    border-color: rgba(147, 197, 253, 0.32) !important;
+    transform: translateY(-1px) !important;
+}
+
+#message-composer button[type="submit"],
+#message-composer button:has(svg[class*="lucide-arrow-up"]) {
+    background: linear-gradient(135deg, #ec4899, #a855f7 54%, #60a5fa) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 10px 24px rgba(168, 85, 247, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+}
+
+#message-composer #upload-button {
+    position: relative !important;
+    width: 34px !important;
+    height: 34px !important;
+    overflow: hidden !important;
+    color: #e2e8f0 !important;
+}
+
+#message-composer #upload-button::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    border-radius: inherit !important;
+    border: 1px solid rgba(226, 232, 240, 0.18) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 18px rgba(8, 13, 24, 0.16) !important;
+    pointer-events: none !important;
+    box-sizing: border-box !important;
+}
+
+#message-composer #upload-button svg {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+#message-composer #chat-submit {
+    width: 34px !important;
+    height: 34px !important;
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+    background: linear-gradient(135deg, #ec4899, #a855f7 54%, #60a5fa) !important;
+    box-shadow: 0 10px 24px rgba(168, 85, 247, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.24) !important;
+}
+
+#message-composer #chat-submit:disabled {
+    opacity: 0.78 !important;
+    filter: saturate(0.92) !important;
+}
+
+*::-webkit-scrollbar:horizontal {
+    height: 0 !important;
+    display: none !important;
+}
+
+*::-webkit-scrollbar-track:horizontal,
+*::-webkit-scrollbar-thumb:horizontal,
+*::-webkit-scrollbar-corner {
+    background: transparent !important;
+    border: 0 !important;
+    display: none !important;
+}
+
+div.flex.flex-row.flex-grow.overflow-auto,
+div.relative.flex.flex-col.flex-grow.overflow-y-auto,
+div.flex.flex-col.flex-grow.overflow-y-auto {
+    overflow-x: hidden !important;
+}
+
+div[class*="flex-row"][class*="flex-grow"][class*="overflow-auto"]::-webkit-scrollbar:horizontal,
+div[class*="flex-col"][class*="flex-grow"][class*="overflow-y-auto"]::-webkit-scrollbar:horizontal,
+.ai-message:has(h1) [class*="overflow-auto"]::-webkit-scrollbar:horizontal {
+    height: 0 !important;
+    display: none !important;
+}
+
+html::-webkit-scrollbar:horizontal,
+body::-webkit-scrollbar:horizontal {
+    height: 0 !important;
+    display: none !important;
+}
+
+.step,
+.step-container,
+[class*="step_"] {
+    max-width: 100% !important;
+}
+
+.ai-message:has(h1) {
+    width: min(980px, calc(100vw - 40px)) !important;
+    margin-inline: auto !important;
+}
+
+.relative.flex.flex-col.flex-grow.overflow-y-auto > .absolute.bottom-4.left-0.right-0.flex.justify-center:has(button svg.lucide-arrow-down) {
+    display: flex !important;
+    justify-content: flex-end !important;
+    padding-right: 40px !important;
+    pointer-events: none !important;
+}
+
+body:not(:has(.user-message)) .relative.flex.flex-col.flex-grow.overflow-y-auto > .absolute.bottom-4.left-0.right-0.flex.justify-center:has(button svg.lucide-arrow-down) {
+    display: flex !important;
+}
+
+.relative.flex.flex-col.flex-grow.overflow-y-auto > .absolute.bottom-4.left-0.right-0.flex.justify-center button:has(svg.lucide-arrow-down) {
+    pointer-events: auto !important;
+}
+
+.ai-message:has(h1) .message-content,
+.ai-message:has(h1) .prose,
+.ai-message:has(h1) .markdown-body {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.ai-message:has(h1) [class*="overflow-auto"] {
+    overflow: visible !important;
+}
+
+/* Hide only the Chainlit avatar beside the welcome heading. */
+.ai-message:has(h1) > span:first-child {
+    display: none !important;
+}
+
+.ai-message:has(h1) h1 {
+    width: fit-content !important;
+    margin: 8px auto 12px !important;
+    padding: 0 12px 12px !important;
+    position: relative !important;
+    font-size: clamp(1.55rem, 2.35vw, 2.15rem) !important;
+    line-height: 1.08 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    letter-spacing: 0 !important;
+    color: #eef6ff !important;
+    -webkit-text-fill-color: currentColor !important;
+    background:
+        linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.08) 24%, rgba(196, 181, 253, 0.1) 62%, transparent),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)) !important;
+    border-radius: 16px !important;
+    text-shadow:
+        0 0 18px rgba(147, 197, 253, 0.24),
+        0 0 34px rgba(94, 234, 212, 0.1) !important;
+}
+
+.ai-message:has(h1) h1::before,
+.ai-message:has(h1) h1::after {
+    content: "" !important;
+    position: absolute !important;
+    pointer-events: none !important;
+}
+
+.ai-message:has(h1) h1::before {
+    left: 12px !important;
+    top: 50% !important;
+    width: 42px !important;
+    height: 42px !important;
+    transform: translate(-12%, -58%) !important;
+    border-radius: 999px !important;
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.22), rgba(168, 85, 247, 0.12) 48%, transparent 72%) !important;
+    filter: blur(7px) !important;
+    z-index: -1 !important;
+}
+
+.ai-message:has(h1) h1::after {
+    left: 50% !important;
+    bottom: 0 !important;
+    width: min(68%, 520px) !important;
+    height: 1px !important;
+    transform: translateX(-50%) !important;
+    background: linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.5), rgba(147, 197, 253, 0.52), transparent) !important;
+    box-shadow: 0 0 14px rgba(125, 211, 252, 0.22) !important;
+}
+
+.ai-message:has(h1) h1::selection {
+    color: #eaf4ff !important;
+    background: rgba(96, 165, 250, 0.28) !important;
+}
+
+.ai-message:has(h1) .prose,
+.ai-message:has(h1) .markdown-body,
+.ai-message:has(h1) .message-content {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.ai-message:has(h1) .prose::before,
+.ai-message:has(h1) .markdown-body::before,
+.ai-message:has(h1) .message-content::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 64px 44px 118px !important;
+    z-index: -1 !important;
+    border-radius: 18px !important;
+    background:
+        linear-gradient(90deg, rgba(65, 214, 189, 0.17) 0%, rgba(65, 214, 189, 0.08) 22%, transparent 44%, rgba(133, 164, 255, 0.08) 70%, rgba(151, 118, 242, 0.17) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.012) 36%, transparent 72%),
+        repeating-linear-gradient(112deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 24px),
+        linear-gradient(135deg, rgba(14, 27, 46, 0.91), rgba(15, 39, 47, 0.84) 36%, rgba(19, 24, 45, 0.86) 66%, rgba(35, 29, 57, 0.88)) !important;
+    border: 1px solid rgba(162, 188, 218, 0.22) !important;
+    box-shadow:
+        inset 42px 0 95px rgba(45, 212, 191, 0.14),
+        inset -42px 0 105px rgba(129, 140, 248, 0.14),
+        inset 0 0 85px rgba(12, 18, 32, 0.46),
+        0 26px 70px rgba(0, 0, 0, 0.24) !important;
+}
+
+.ai-message:has(h1) h2 {
+    width: fit-content !important;
+    margin: 16px auto 10px !important;
+    font-size: clamp(1.15rem, 1.55vw, 1.45rem) !important;
+    line-height: 1.18 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0 !important;
+}
+
+.ai-message:has(h1) hr,
+.ai-message:has(h1) blockquote {
+    display: none !important;
+}
+
+/* Chainlit wraps markdown tables in an overflow div. Only the wrapper after
+   Workflow Steps becomes the diagram. */
+.ai-message:has(h1) h2:first-of-type + div {
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin: 0 auto 18px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div div {
+    overflow: visible !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div {
+    width: min(720px, 100%) !important;
+    margin: 0 auto 18px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div div {
+    overflow: visible !important;
+}
+
+/* Workflow diagram table. */
+.ai-message:has(h1) h2:first-of-type + div table {
+    --node-width: 178px;
+    --node-height: 66px;
+    --gap-x: 58px;
+    --gap-y: 18px;
+    display: grid !important;
+    grid-template-columns: repeat(3, var(--node-width)) !important;
+    grid-template-rows: repeat(3, var(--node-height)) !important;
+    column-gap: var(--gap-x) !important;
+    row-gap: var(--gap-y) !important;
+    width: calc((var(--node-width) * 3) + (var(--gap-x) * 2)) !important;
+    min-width: calc((var(--node-width) * 3) + (var(--gap-x) * 2)) !important;
+    min-height: calc((var(--node-height) * 3) + (var(--gap-y) * 2)) !important;
+    margin: 4px auto 16px !important;
+    padding: 10px 16px !important;
+    position: relative !important;
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 740 304'%3E%3Cdefs%3E%3Cmarker id='a' viewBox='0 0 8 8' refX='7' refY='4' markerWidth='7' markerHeight='7' orient='auto-start-reverse'%3E%3Cpath d='M0,0 L8,4 L0,8 Z' fill='%2393c5fd' opacity='.9'/%3E%3C/marker%3E%3Cfilter id='g'%3E%3CfeGaussianBlur stdDeviation='1.2' result='b'/%3E%3CfeMerge%3E%3CfeMergeNode in='b'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='%2393c5fd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' marker-end='url(%23a)' filter='url(%23g)' opacity='.72'%3E%3Cpath d='M208 50 H276'/%3E%3Cpath d='M466 50 H532'/%3E%3Cpath d='M113 88 V114'/%3E%3Cpath d='M113 190 V216'/%3E%3Cpath d='M627 88 V114'/%3E%3Cpath d='M627 190 V216'/%3E%3Cpath d='M208 152 C246 152 238 252 276 252'/%3E%3Cpath d='M532 252 H466'/%3E%3C/g%3E%3C/svg%3E") !important;
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table thead {
+    display: none !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tbody {
+    display: contents !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr {
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+    width: var(--node-width) !important;
+    min-width: var(--node-width) !important;
+    height: var(--node-height) !important;
+    min-height: var(--node-height) !important;
+    padding: 8px 10px !important;
+    border-radius: 9px !important;
+    border: 1px solid rgba(148, 163, 184, 0.38) !important;
+    background: linear-gradient(135deg, rgba(52, 59, 74, 0.76), rgba(27, 31, 42, 0.82)) !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    z-index: 2 !important;
+    box-sizing: border-box !important;
+    scale: 1 !important;
+    transform: translateZ(0) !important;
+    transform-origin: center !important;
+    transition: scale 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr:hover {
+    scale: 1.025 !important;
+    transform: translateZ(0) !important;
+    border-color: rgba(147, 197, 253, 0.72) !important;
+    background: linear-gradient(135deg, rgba(61, 72, 92, 0.86), rgba(32, 42, 62, 0.9)) !important;
+    box-shadow:
+        0 0 26px rgba(96, 165, 250, 0.22),
+        0 18px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Project workflow positions. */
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(1) { grid-column: 1 !important; grid-row: 1 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(2) { grid-column: 2 !important; grid-row: 1 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(3) { grid-column: 1 !important; grid-row: 2 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(4) { grid-column: 1 !important; grid-row: 3 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(5) { grid-column: 3 !important; grid-row: 1 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(6) { grid-column: 3 !important; grid-row: 2 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(7) { grid-column: 3 !important; grid-row: 3 !important; }
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(8) { grid-column: 2 !important; grid-row: 3 !important; }
+
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(1),
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(2) {
+    border-color: rgba(110, 231, 183, 0.88) !important;
+    box-shadow: 0 0 22px rgba(110, 231, 183, 0.26), 0 14px 30px rgba(0, 0, 0, 0.34), inset 0 0 20px rgba(110, 231, 183, 0.08) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(5) {
+    border-color: rgba(147, 197, 253, 0.88) !important;
+    box-shadow: 0 0 22px rgba(147, 197, 253, 0.26), 0 14px 30px rgba(0, 0, 0, 0.34), inset 0 0 20px rgba(147, 197, 253, 0.08) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr:hover {
+    border-color: rgba(147, 197, 253, 0.72) !important;
+    box-shadow:
+        0 0 26px rgba(96, 165, 250, 0.22),
+        0 18px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 8px !important;
+    right: 9px !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 999px !important;
+    background: rgba(148, 163, 184, 0.48) !important;
+    box-shadow: 0 0 0 5px rgba(148, 163, 184, 0.1) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(1)::after,
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(2)::after {
+    background: #86efac !important;
+    box-shadow: 0 0 10px #86efac, 0 0 0 5px rgba(134, 239, 172, 0.16) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tr:nth-child(5)::after {
+    background: #93c5fd !important;
+    box-shadow: 0 0 10px #93c5fd, 0 0 0 5px rgba(147, 197, 253, 0.16) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table td {
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table td:nth-child(1) {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+    color: #dbeafe !important;
+    font-size: 0.76rem !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table td:nth-child(1)::before {
+    content: "Step " !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table td:nth-child(2) {
+    margin-bottom: 5px !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table code {
+    display: inline-block !important;
+    max-width: 100% !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    background: rgba(8, 12, 20, 0.76) !important;
+    color: #dbeafe !important;
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table td:nth-child(3) {
+    color: #e5e7eb !important;
+    font-size: 0.76rem !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+}
+
+/* Run All Steps and Utilities. */
+.ai-message:has(h1) h2:not(:first-of-type) + div table {
+    display: block !important;
+    width: min(560px, 100%) !important;
+    margin-inline: auto !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table thead {
+    display: none !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table tr {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-height: 58px !important;
+    padding: 10px 12px !important;
+    border: 1px solid rgba(148, 163, 184, 0.24) !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, rgba(52, 59, 74, 0.64), rgba(27, 31, 42, 0.72)) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24) !important;
+    scale: 1 !important;
+    transform: translateZ(0) !important;
+    transform-origin: center !important;
+    transition: scale 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table tr:hover {
+    scale: 1.025 !important;
+    transform: translateZ(0) !important;
+    border-color: rgba(147, 197, 253, 0.46) !important;
+    background: linear-gradient(135deg, rgba(61, 72, 92, 0.78), rgba(35, 44, 66, 0.82)) !important;
+    box-shadow:
+        0 0 20px rgba(125, 211, 252, 0.16),
+        0 15px 34px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table td {
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: #e5e7eb !important;
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table td:first-child {
+    width: auto !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table td:last-child {
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #cbd5e1 !important;
+    font-size: 0.72rem !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table code {
+    display: inline-block !important;
+    max-width: 100% !important;
+    padding: 3px 7px !important;
+    border-radius: 999px !important;
+    background: rgba(8, 12, 20, 0.78) !important;
+    color: #dbeafe !important;
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+@media (max-width: 900px) {
+    .ai-message:has(h1) {
+        width: min(760px, calc(100vw - 32px)) !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table {
+        --node-width: 136px;
+        --node-height: 58px;
+        --gap-x: 18px;
+        --gap-y: 14px;
+    }
+
+    .ai-message:has(h1) h1 {
+        font-size: clamp(1.15rem, 3.05vw, 1.55rem) !important;
+        white-space: nowrap !important;
+    }
+
+    .ai-message:has(h1) h2 {
+        font-size: clamp(1rem, 2.6vw, 1.25rem) !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(1) {
+        font-size: 0.68rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table code {
+        padding: 3px 6px !important;
+        font-size: 0.58rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(3) {
+        font-size: 0.62rem !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .ai-message:has(h1) h1 {
+        font-size: clamp(0.84rem, 3.1vw, 1rem) !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+    }
+
+    .ai-message:has(h1),
+    .ai-message:has(h1) .message-content,
+    .ai-message:has(h1) .prose,
+    .ai-message:has(h1) .markdown-body {
+        overflow-x: hidden !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div {
+        width: fit-content !important;
+        overflow: visible !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table {
+        --node-width: 112px;
+        --node-height: 54px;
+        --gap-x: 6px;
+        --gap-y: 10px;
+        padding-inline: 0 !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table tr {
+        padding: 6px 7px !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(1) {
+        margin-bottom: 4px !important;
+        padding-bottom: 4px !important;
+        font-size: 0.6rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table code {
+        padding: 2px 5px !important;
+        font-size: 0.5rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(3) {
+        font-size: 0.54rem !important;
+    }
+}
+
+/* Desktop dashboard layout: use the full page width, not a centered card. */
+@media (min-width: 1280px) {
+    .step:has(.ai-message h1),
+    .step-container:has(.ai-message h1),
+    [class*="step_"]:has(.ai-message h1) {
+        width: calc(100vw - 32px) !important;
+        max-width: none !important;
+        margin-inline: auto !important;
+    }
+
+    .ai-message:has(h1) {
+        position: relative !important;
+        width: calc(100vw - 24px) !important;
+        max-width: none !important;
+        left: auto !important;
+        transform: none !important;
+        margin-left: calc(50% - 50vw + 12px) !important;
+        margin-right: calc(50% - 50vw + 12px) !important;
+    }
+
+    .ai-message:has(h1) .message-content,
+    .ai-message:has(h1) .prose,
+    .ai-message:has(h1) .markdown-body {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .ai-message:has(h1) .prose,
+    .ai-message:has(h1) .markdown-body {
+        display: grid !important;
+        grid-template-columns: 155px minmax(780px, 1fr) minmax(210px, 230px) !important;
+        grid-template-rows: auto auto auto auto auto !important;
+        column-gap: 30px !important;
+        row-gap: 10px !important;
+        align-items: start !important;
+        padding-inline: 16px !important;
+    }
+
+    .ai-message:has(h1) .prose::after,
+    .ai-message:has(h1) .markdown-body::after {
+        content: "▦  Dashboard\A⇄  Workflows\A▣  Agent Logs\A⚙  Settings" !important;
+        grid-column: 1 !important;
+        grid-row: 3 / span 3 !important;
+        align-self: start !important;
+        min-height: 320px !important;
+        margin-top: 12px !important;
+        padding: 20px 18px !important;
+        white-space: pre-line !important;
+        color: #dbeafe !important;
+        font-size: 1rem !important;
+        line-height: 2.45 !important;
+        font-weight: 600 !important;
+        box-sizing: border-box !important;
+        border-radius: 18px !important;
+        border: 1px solid rgba(148, 163, 184, 0.18) !important;
+        background:
+            linear-gradient(90deg, rgba(116, 132, 164, 0.2), rgba(116, 132, 164, 0.08)) 10px 18px / calc(100% - 20px) 42px no-repeat,
+            linear-gradient(180deg, rgba(32, 42, 60, 0.88), rgba(20, 26, 38, 0.76)) !important;
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05), 0 22px 60px rgba(0, 0, 0, 0.32) !important;
+        backdrop-filter: blur(18px) !important;
+        -webkit-backdrop-filter: blur(18px) !important;
+    }
+
+    .ai-message:has(h1) .prose::before,
+    .ai-message:has(h1) .markdown-body::before,
+    .ai-message:has(h1) .message-content::before {
+        inset: 66px 0 22px !important;
+        border-radius: 20px !important;
+    }
+
+    .ai-message:has(h1) h1 {
+        grid-column: 1 / -1 !important;
+        grid-row: 1 !important;
+        margin: 10px auto 0 !important;
+        font-size: clamp(2rem, 2.25vw, 2.45rem) !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type {
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+        justify-self: center !important;
+        margin: 8px 0 4px !important;
+        transform: translateY(-14px) !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div {
+        grid-column: 2 !important;
+        grid-row: 3 !important;
+        justify-self: stretch !important;
+        width: 100% !important;
+        margin: 0 !important;
+        transform: translateY(-14px) !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(2) {
+        grid-column: 2 !important;
+        grid-row: 4 !important;
+        justify-self: center !important;
+        margin: 6px 0 4px !important;
+        text-align: center !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(2) + div {
+        grid-column: 2 !important;
+        grid-row: 5 !important;
+        width: min(720px, 100%) !important;
+        margin: 0 !important;
+        justify-self: center !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(3) {
+        grid-column: 3 !important;
+        grid-row: 2 !important;
+        justify-self: stretch !important;
+        margin: 24px 28px 4px 0 !important;
+        text-align: left !important;
+        transform: translateX(-8px) !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(3) + div {
+        grid-column: 3 !important;
+        grid-row: 3 !important;
+        width: calc(100% - 8px) !important;
+        margin: 0 !important;
+        transform: translate(-8px, 16px) !important;
+    }
+
+    .ai-message:has(h1) article {
+        grid-column: 3 !important;
+        grid-row: 4 !important;
+        align-self: end !important;
+        margin-top: 54px !important;
+        padding: 14px 16px !important;
+        width: calc(100% - 8px) !important;
+        min-height: 78px !important;
+        border: 1px solid rgba(148, 163, 184, 0.24) !important;
+        border-radius: 14px !important;
+        background: linear-gradient(135deg, rgba(52, 59, 74, 0.54), rgba(27, 31, 42, 0.72)) !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+        color: transparent !important;
+        font-size: 0.82rem !important;
+        transform: translateX(-8px) !important;
+    }
+
+    .ai-message:has(h1) article > * {
+        display: none !important;
+    }
+
+    .ai-message:has(h1) article::before {
+        content: "📎 Attachments" !important;
+        display: block !important;
+        margin-bottom: 8px !important;
+        color: #e5e7eb !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+    }
+
+    .ai-message:has(h1) article::after {
+        content: "Future enhancement: upload supporting files" !important;
+        display: block !important;
+        color: #cbd5e1 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.3 !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table {
+        --node-width: 218px;
+        --node-height: 94px;
+        --gap-x: 58px;
+        --gap-y: 24px;
+        width: calc((var(--node-width) * 3) + (var(--gap-x) * 2)) !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 8px 0 !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table tr {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(1) {
+        margin-bottom: 7px !important;
+        padding-bottom: 7px !important;
+        font-size: 0.86rem !important;
+        text-align: left !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(2) {
+        margin-bottom: 7px !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table code {
+        padding: 4px 9px !important;
+        font-size: 0.78rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(3) {
+        margin-top: auto !important;
+        padding-top: 2px !important;
+        font-size: 0.86rem !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+    }
+
+    .ai-message:has(h1) h2:not(:first-of-type) + div table {
+        width: 100% !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(2) + div table tbody {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .ai-message:has(h1) h2:nth-of-type(3) + div table tbody {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .ai-message:has(h1) h2:not(:first-of-type) + div table tr {
+        min-height: 70px !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+    }
+
+    .ai-message:has(h1) h2:not(:first-of-type) + div table td {
+        font-size: 0.86rem !important;
+    }
+
+    .ai-message:has(h1) h2:not(:first-of-type) + div table td:last-child {
+        font-size: 0.78rem !important;
+    }
+
+    .ai-message:has(h1) h2:not(:first-of-type) + div table code {
+        font-size: 0.72rem !important;
+        padding: 4px 8px !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .ai-message:has(h1) .prose,
+    .ai-message:has(h1) .markdown-body {
+        grid-template-columns: 165px minmax(860px, 1fr) minmax(220px, 240px) !important;
+        column-gap: 30px !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table {
+        --node-width: 236px;
+        --node-height: 102px;
+        --gap-x: 72px;
+        --gap-y: 28px;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(1) {
+        font-size: 0.9rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table code {
+        font-size: 0.82rem !important;
+    }
+
+    .ai-message:has(h1) h2:first-of-type + div table td:nth-child(3) {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Final hover layer: visual-only, no layout dimensions changed. */
+.ai-message:has(h1) h2:first-of-type + div table tbody tr:hover,
+.ai-message:has(h1) h2:first-of-type + div table tbody tr:has(td:hover) {
+    scale: 1.025 !important;
+    border-color: rgba(147, 197, 253, 0.76) !important;
+    background: linear-gradient(135deg, rgba(61, 72, 92, 0.88), rgba(32, 42, 62, 0.92)) !important;
+    box-shadow:
+        0 0 28px rgba(96, 165, 250, 0.24),
+        0 20px 42px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.13) !important;
+}
+
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody tr:hover,
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody tr:has(td:hover) {
+    scale: 1.025 !important;
+    border-color: rgba(147, 197, 253, 0.5) !important;
+    background: linear-gradient(135deg, rgba(61, 72, 92, 0.8), rgba(35, 44, 66, 0.84)) !important;
+    box-shadow:
+        0 0 22px rgba(125, 211, 252, 0.18),
+        0 16px 36px rgba(0, 0, 0, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.11) !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tbody tr td,
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody tr td {
+    transition: transform 180ms ease, color 180ms ease !important;
+}
+
+.ai-message:has(h1) h2:first-of-type + div table tbody tr:hover td,
+.ai-message:has(h1) h2:first-of-type + div table tbody tr:has(td:hover) td,
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody tr:hover td,
+.ai-message:has(h1) h2:not(:first-of-type) + div table tbody tr:has(td:hover) td {
+    transform: translateZ(0) scale(1.01) !important;
+}
+
+/* Voice input button: scoped only to the message composer. */
+#message-composer {
+    position: relative !important;
+}
+
+#message-composer #va-voice-button {
+    position: absolute !important;
+    left: 58px !important;
+    bottom: 13px !important;
+    z-index: 5 !important;
+    width: 34px !important;
+    height: 34px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+    color: rgba(226, 232, 240, 0.82) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: transform 160ms ease, color 160ms ease, background-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+#message-composer #va-voice-button:hover:not(:disabled) {
+    transform: translateY(-1px) !important;
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#message-composer #va-voice-button.va-voice-listening {
+    color: #f472b6 !important;
+    background-color: rgba(236, 72, 153, 0.12) !important;
+    box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1) !important;
+}
+
+#message-composer #va-voice-button:disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+}
+
+#message-composer #va-voice-button .va-voice-icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: block !important;
+    stroke: currentColor !important;
+}
+
+/* --------------------------------------------------------------------------
+   Validation Agent — React Cinematic HUD overlay
+   Pure visual overlay. pointer-events: none so it never blocks Chainlit
+   controls (composer, action buttons, sidebar, scroll, etc.).
+   Disabled automatically when prefers-reduced-motion is on.
+   -------------------------------------------------------------------------- */
+
+:root {
+    --va-hud-cyan: #70e6dc;
+    --va-hud-blue: #83bbff;
+    --va-hud-amber: #f5c46f;
+    --va-hud-panel: rgba(8, 16, 28, 0.62);
+    --va-hud-panel-strong: rgba(10, 20, 34, 0.78);
+    --va-hud-border: rgba(176, 210, 255, 0.32);
+    --va-hud-text: #eef6ff;
+    --va-hud-muted: rgba(176, 210, 255, 0.78);
+}
+
+#va-cinematic-root {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 9 !important;
+}
+
+#va-cinematic-root,
+#va-cinematic-root * {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+.va-hud-stage {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    contain: layout paint !important;
+}
+
+.va-hud-canvas {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    mix-blend-mode: screen !important;
+    opacity: 0.62 !important;
+}
+
+/* Atmospheric vignette + scanlines layered behind everything. */
+body.va-hud-active::before {
+    background:
+        radial-gradient(1100px 700px at 18% 14%, rgba(112, 230, 220, 0.16), transparent 62%),
+        radial-gradient(1100px 660px at 82% 18%, rgba(131, 187, 255, 0.13), transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01) 42%, transparent 76%),
+        repeating-linear-gradient(128deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 22px) !important;
+    opacity: 0.88 !important;
+}
+
+.va-hud-active #va-cinematic-root .va-hud-stage::after {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.03)),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 8px) !important;
+    mix-blend-mode: screen !important;
+    opacity: 0.28 !important;
+}
+
+/* Corner brackets — four animated frame markers. */
+.va-hud-corners {
+    position: fixed !important;
+    inset: 18px !important;
+    pointer-events: none !important;
+}
+
+.va-hud-corner {
+    position: absolute !important;
+    width: 38px !important;
+    height: 38px !important;
+    border: 1.4px solid var(--va-hud-cyan) !important;
+    box-shadow:
+        0 0 16px rgba(112, 230, 220, 0.25),
+        inset 0 0 12px rgba(112, 230, 220, 0.18) !important;
+    filter: drop-shadow(0 0 6px rgba(112, 230, 220, 0.32)) !important;
+    border-radius: 4px !important;
+    pointer-events: none !important;
+}
+
+.va-hud-corner-tl {
+    top: 0 !important;
+    left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.va-hud-corner-tr {
+    top: 0 !important;
+    right: 0 !important;
+    border-left: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.va-hud-corner-bl {
+    bottom: 0 !important;
+    left: 0 !important;
+    border-right: 0 !important;
+    border-top: 0 !important;
+}
+
+.va-hud-corner-br {
+    bottom: 0 !important;
+    right: 0 !important;
+    border-left: 0 !important;
+    border-top: 0 !important;
+}
+
+/* Mission control panel (top-right) */
+.va-hud-panel {
+    position: fixed !important;
+    pointer-events: none !important;
+    color: var(--va-hud-text) !important;
+    font-family: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo,
+        Consolas, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.08em !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 38%, rgba(112, 230, 220, 0.05)),
+        linear-gradient(145deg, var(--va-hud-panel-strong), rgba(6, 12, 22, 0.84)) !important;
+    border: 1px solid var(--va-hud-border) !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow:
+        0 18px 48px rgba(0, 7, 20, 0.46),
+        0 0 22px rgba(112, 230, 220, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+.va-hud-mission {
+    top: 72px !important;
+    right: 28px !important;
+    min-width: 248px !important;
+    max-width: 320px !important;
+}
+
+.va-hud-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    margin: 0 !important;
+}
+
+.va-hud-row + .va-hud-row {
+    margin-top: 6px !important;
+}
+
+.va-hud-row-detail {
+    color: var(--va-hud-muted) !important;
+    font-size: 10.5px !important;
+}
+
+.va-hud-dot {
+    display: inline-block !important;
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    background: var(--va-hud-cyan) !important;
+    box-shadow:
+        0 0 10px var(--va-hud-cyan),
+        0 0 0 4px rgba(112, 230, 220, 0.18) !important;
+}
+
+.va-hud-label {
+    color: var(--va-hud-text) !important;
+    font-weight: 600 !important;
+}
+
+.va-hud-sep {
+    color: rgba(176, 210, 255, 0.36) !important;
+}
+
+.va-hud-time {
+    color: var(--va-hud-text) !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+.va-hud-key,
+.va-hud-tag {
+    color: rgba(176, 210, 255, 0.62) !important;
+}
+
+.va-hud-value {
+    color: var(--va-hud-text) !important;
+    font-weight: 500 !important;
+}
+
+.va-hud-value-active {
+    color: var(--va-hud-cyan) !important;
+    text-shadow: 0 0 12px rgba(112, 230, 220, 0.45) !important;
+}
+
+.va-hud-mono {
+    font-variant-numeric: tabular-nums !important;
+}
+
+.va-hud-bar-track {
+    flex: 0 0 64px !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background: rgba(176, 210, 255, 0.16) !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.va-hud-bar {
+    display: block !important;
+    height: 100% !important;
+    width: 100% !important;
+    transform-origin: left center !important;
+    background: linear-gradient(
+        90deg,
+        var(--va-hud-cyan),
+        var(--va-hud-blue) 60%,
+        var(--va-hud-amber)
+    ) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 0 14px rgba(112, 230, 220, 0.42) !important;
+}
+
+/* Vertical equaliser rail (left edge) */
+.va-hud-rail {
+    position: fixed !important;
+    top: 50% !important;
+    left: 14px !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    pointer-events: none !important;
+    height: 60vh !important;
+    max-height: 520px !important;
+}
+
+.va-hud-rail-bar {
+    width: 3px !important;
+    flex: 1 1 0 !important;
+    background: linear-gradient(180deg, var(--va-hud-cyan), var(--va-hud-blue)) !important;
+    border-radius: 999px !important;
+    transform-origin: center !important;
+    box-shadow: 0 0 10px rgba(112, 230, 220, 0.28) !important;
+    opacity: 0.7 !important;
+}
+
+/* Status footer (bottom-left) */
+.va-hud-footer {
+    bottom: 14px !important;
+    left: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 5px 9px !important;
+    font-size: 9px !important;
+    max-width: 38vw !important;
+    overflow: hidden !important;
+}
+
+.va-hud-footer-glow {
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(90deg, transparent, rgba(112, 230, 220, 0.16), transparent) !important;
+    pointer-events: none !important;
+}
+
+/* Hide everything on small screens — HUD is desktop-grade decoration. */
+@media (max-width: 900px) {
+    .va-hud-rail,
+    .va-hud-footer,
+    .va-hud-corners {
+        display: none !important;
+    }
+
+    .va-hud-mission {
+        top: 60px !important;
+        right: 16px !important;
+        min-width: 200px !important;
+        padding: 8px 11px !important;
+        font-size: 10px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .va-hud-canvas {
+        display: none !important;
+    }
+
+    .va-hud-corner,
+    .va-hud-bar,
+    .va-hud-rail-bar,
+    .va-hud-footer-glow,
+    .va-hud-dot {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+/* --------------------------------------------------------------------------
+   Validation Agent — Neural-Core cinematic scene (additions)
+   Adds: neural graph, orb, scan beam, holographic floor, data stream.
+   Repositions mission HUD below the page title.
+   -------------------------------------------------------------------------- */
+
+.va-hud-neural {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    opacity: 0.55 !important;
+    mix-blend-mode: screen !important;
+}
+
+/* Orb (top-left) */
+.va-hud-orb {
+    position: fixed !important;
+    top: 92px !important;
+    left: 32px !important;
+    width: 132px !important;
+    height: 132px !important;
+    pointer-events: none !important;
+    filter: drop-shadow(0 0 24px rgba(112, 230, 220, 0.42)) drop-shadow(0 0 60px rgba(131, 187, 255, 0.22)) !important;
+}
+
+.va-hud-orb-svg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+.va-hud-orb-label {
+    position: absolute !important;
+    left: 50% !important;
+    top: calc(100% + 6px) !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2px !important;
+    text-align: center !important;
+    pointer-events: none !important;
+    font-family: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo,
+        Consolas, monospace !important;
+}
+
+.va-hud-orb-eyebrow {
+    font-size: 9.5px !important;
+    letter-spacing: 0.24em !important;
+    color: rgba(176, 210, 255, 0.62) !important;
+}
+
+.va-hud-orb-status {
+    font-size: 10.5px !important;
+    letter-spacing: 0.16em !important;
+    color: #9af3ea !important;
+    text-shadow: 0 0 12px rgba(112, 230, 220, 0.5) !important;
+    font-weight: 600 !important;
+}
+
+/* Scan beam */
+.va-hud-scan {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    height: 140px !important;
+    pointer-events: none !important;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(112, 230, 220, 0.08) 35%,
+        rgba(154, 243, 234, 0.22) 50%,
+        rgba(112, 230, 220, 0.08) 65%,
+        transparent 100%
+    ) !important;
+    mix-blend-mode: screen !important;
+    filter: blur(1px) !important;
+}
+
+/* Holographic floor */
+.va-hud-holo {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 38vh !important;
+    pointer-events: none !important;
+    perspective: 620px !important;
+    perspective-origin: 50% 0% !important;
+    overflow: hidden !important;
+    opacity: 0.55 !important;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 90%, transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 90%, transparent 100%) !important;
+}
+
+.va-hud-holo-grid {
+    position: absolute !important;
+    left: -25% !important;
+    right: -25% !important;
+    bottom: -10% !important;
+    height: 220% !important;
+    transform: rotateX(68deg) !important;
+    transform-origin: 50% 100% !important;
+    background-image:
+        linear-gradient(rgba(112, 230, 220, 0.32) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112, 230, 220, 0.18) 1px, transparent 1px) !important;
+    background-size: 80px 80px, 80px 80px !important;
+    background-position: 0 0, 0 0 !important;
+    pointer-events: none !important;
+}
+
+/* Data stream (left edge) */
+.va-hud-stream {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 78px !important;
+    pointer-events: none !important;
+    display: flex !important;
+    gap: 6px !important;
+    padding: 0 6px !important;
+    overflow: hidden !important;
+    opacity: 0.65 !important;
+    mask-image: linear-gradient(90deg, #000 0%, transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 100%) !important;
+}
+
+.va-hud-stream-col {
+    flex: 1 1 0 !important;
+    writing-mode: vertical-rl !important;
+    font-family: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo,
+        Consolas, monospace !important;
+    font-size: 10px !important;
+    letter-spacing: 0.16em !important;
+    color: #70e6dc !important;
+    text-shadow: 0 0 6px rgba(112, 230, 220, 0.65) !important;
+    white-space: pre !important;
+    line-height: 1.2 !important;
+}
+
+/* Reposition mission HUD below page title */
+.va-hud-mission {
+    top: 86px !important;
+    right: 24px !important;
+}
+
+/* Active baseline value glow boost */
+.va-hud-value-active {
+    color: #9af3ea !important;
+    text-shadow: 0 0 14px rgba(154, 243, 234, 0.65),
+        0 0 30px rgba(112, 230, 220, 0.35) !important;
+    letter-spacing: 0.12em !important;
+}
+
+.va-hud-value-idle {
+    color: rgba(176, 210, 255, 0.55) !important;
+    letter-spacing: 0.18em !important;
+}
+
+/* Brighter scene base on dark theme */
+body.va-hud-active::before {
+    background:
+        radial-gradient(1100px 700px at 18% 14%, rgba(112, 230, 220, 0.22), transparent 62%),
+        radial-gradient(1100px 660px at 82% 18%, rgba(131, 187, 255, 0.18), transparent 60%),
+        radial-gradient(900px 560px at 50% 100%, rgba(189, 140, 255, 0.16), transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01) 42%, transparent 76%),
+        repeating-linear-gradient(128deg, rgba(255, 255, 255, 0.032) 0 1px, transparent 1px 22px) !important;
+    opacity: 1 !important;
+}
+
+@media (max-width: 1100px) {
+    .va-hud-stream {
+        display: none !important;
+    }
+    .va-hud-orb {
+        width: 96px !important;
+        height: 96px !important;
+        top: 76px !important;
+        left: 18px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .va-hud-orb,
+    .va-hud-holo,
+    .va-hud-neural,
+    .va-hud-scan,
+    .va-hud-rail,
+    .va-hud-footer,
+    .va-hud-corners {
+        display: none !important;
+    }
+    .va-hud-mission {
+        top: 60px !important;
+        right: 14px !important;
+        min-width: 200px !important;
+        padding: 8px 11px !important;
+        font-size: 10px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .va-hud-canvas,
+    .va-hud-scan,
+    .va-hud-stream,
+    .va-hud-neural {
+        display: none !important;
+    }
+}
+
+
+/* --------------------------------------------------------------------------
+   Validation Agent — Content-safe cinematic discipline.
+   Confines FX to the side gutters and footer band, leaving the centre column
+   (workflow board + chat messages) completely clean. Boosts contrast behind
+   text so AI responses stay perfectly readable.
+   -------------------------------------------------------------------------- */
+
+/* Side-gutter mask: FX visible on the left and right edges only.
+   Center 35%-65% of the viewport is fully transparent for the FX layer. */
+.va-hud-neural,
+.va-hud-canvas,
+.va-hud-holo {
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        #000 0%,
+        #000 18%,
+        rgba(0, 0, 0, 0.25) 28%,
+        transparent 35%,
+        transparent 65%,
+        rgba(0, 0, 0, 0.25) 72%,
+        #000 82%,
+        #000 100%
+    ) !important;
+    mask-image: linear-gradient(
+        90deg,
+        #000 0%,
+        #000 18%,
+        rgba(0, 0, 0, 0.25) 28%,
+        transparent 35%,
+        transparent 65%,
+        rgba(0, 0, 0, 0.25) 72%,
+        #000 82%,
+        #000 100%
+    ) !important;
+}
+
+/* Tone everything down so the page content dominates. */
+.va-hud-canvas {
+    opacity: 0.38 !important;
+}
+
+.va-hud-neural {
+    opacity: 0.32 !important;
+}
+
+.va-hud-holo {
+    opacity: 0.35 !important;
+    height: 30vh !important;
+}
+
+/* Remove the horizontal scan beam — it intrinsically crosses content. */
+.va-hud-scan {
+    display: none !important;
+}
+
+/* Hide the glyph data-stream unless we're on a very wide display. */
+@media (max-width: 1500px) {
+    .va-hud-stream {
+        display: none !important;
+    }
+}
+
+/* Move the Neural Core orb out of the sidebar zone — sit it above the
+   bottom-left status strip, smaller and quieter. */
+.va-hud-orb {
+    top: auto !important;
+    bottom: 78px !important;
+    left: 28px !important;
+    width: 96px !important;
+    height: 96px !important;
+    filter: drop-shadow(0 0 18px rgba(112, 230, 220, 0.32))
+        drop-shadow(0 0 44px rgba(131, 187, 255, 0.16)) !important;
+    opacity: 0.85 !important;
+}
+
+.va-hud-orb-label {
+    top: auto !important;
+    bottom: calc(100% + 4px) !important;
+}
+
+.va-hud-orb-eyebrow {
+    font-size: 8.5px !important;
+    letter-spacing: 0.28em !important;
+}
+
+.va-hud-orb-status {
+    font-size: 9px !important;
+    letter-spacing: 0.2em !important;
+}
+
+/* Mission HUD — horizontal strip pinned at the very top of the page. */
+.va-hud-mission {
+    top: 6px !important;
+    bottom: auto !important;
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: 92vw !important;
+    padding: 6px 14px !important;
+    font-size: 10px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 40%, rgba(112, 230, 220, 0.04)),
+        linear-gradient(145deg, rgba(8, 16, 28, 0.86), rgba(4, 10, 20, 0.92)) !important;
+}
+
+.va-hud-mission .va-hud-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    margin-top: 0 !important;
+}
+
+.va-hud-mission .va-hud-row + .va-hud-row {
+    margin-top: 0 !important;
+    border-left: 1px solid rgba(112, 230, 220, 0.18) !important;
+    padding-left: 14px !important;
+}
+
+.va-hud-mission .va-hud-row .va-hud-sep {
+    display: inline !important;
+}
+
+.va-hud-mission .va-hud-bar-track {
+    width: 70px !important;
+}
+
+.va-hud-mission .va-hud-row {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+}
+
+.va-hud-mission .va-hud-row + .va-hud-row {
+    margin-top: 5px !important;
+}
+
+/* Quiet the corner brackets so they read as frame, not chrome. */
+.va-hud-corner {
+    width: 28px !important;
+    height: 28px !important;
+    border-width: 1px !important;
+    box-shadow:
+        0 0 10px rgba(112, 230, 220, 0.18),
+        inset 0 0 8px rgba(112, 230, 220, 0.12) !important;
+}
+
+/* Thin the side rail so it reads as edge accent. */
+.va-hud-rail {
+    left: 8px !important;
+    height: 48vh !important;
+    max-height: 420px !important;
+    gap: 3px !important;
+    opacity: 0.55 !important;
+}
+
+.va-hud-rail-bar {
+    width: 2px !important;
+}
+
+/* Calm the global atmospheric overlay so it doesn't wash out content. */
+body.va-hud-active::before {
+    background:
+        radial-gradient(900px 580px at 12% 10%, rgba(112, 230, 220, 0.16), transparent 60%),
+        radial-gradient(900px 540px at 88% 14%, rgba(131, 187, 255, 0.13), transparent 60%),
+        radial-gradient(800px 480px at 50% 100%, rgba(189, 140, 255, 0.10), transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 50%) !important;
+    opacity: 1 !important;
+}
+
+.va-hud-active #va-cinematic-root .va-hud-stage::after {
+    opacity: 0.18 !important;
+}
+
+/* Boost legibility behind chat messages so AI responses stay crisp. */
+[class*="ai-message"],
+[class*="user-message"] {
+    position: relative !important;
+}
+
+[class*="ai-message"]::before,
+[class*="user-message"]::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -6px -10px !important;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(6, 12, 22, 0.42) 0%,
+        rgba(6, 12, 22, 0.18) 55%,
+        transparent 100%
+    ) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    border-radius: 14px !important;
+}
+
+/* Footer band gets a subtle dark backplate so EPOCH/CHANNEL/FOCUS read well. */
+.va-hud-footer {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 38%, rgba(112, 230, 220, 0.04)),
+        linear-gradient(145deg, rgba(8, 16, 28, 0.86), rgba(4, 10, 20, 0.92)) !important;
+    left: 120px !important;
+    bottom: 12px !important;
+}
+
+@media (max-width: 900px) {
+    .va-hud-orb,
+    .va-hud-holo,
+    .va-hud-neural,
+    .va-hud-stream {
+        display: none !important;
+    }
+
+    .va-hud-footer {
+        left: 14px !important;
+    }
+}

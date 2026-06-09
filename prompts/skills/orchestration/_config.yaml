@@ -1,0 +1,175 @@
+# Orchestrator runtime configuration.
+#
+# Loaded by services/orchestrator.py at startup. Zero hardcoded config in
+# Python — change behaviour here, not in code.
+#
+# Extracted from prompts/WORKFLOW_ORCHESTRATION_SKILL.md (verbatim).
+
+ui:
+  welcome_file: "prompts/welcome.md"
+  # Streaming replay chunk size (characters) for buffered LLM text
+  # responses. Used by services.orchestrator._stream_chunks. Smaller =
+  # smoother UX, more Chainlit updates. Larger = fewer updates, less
+  # network chatter. Default 24 preserves historical behaviour.
+  stream_chunk_size: 24
+
+agentic:
+
+  # Dispatch mode for agentic_dispatch().
+  #   router_worker (default) — Stage-1 router (deterministic + tiny LLM
+  #                             call) picks one skill; Stage-2 worker
+  #                             loads ONLY that skill + its single tool.
+  #                             ~60-70% smaller per-message LLM prompt.
+  #   legacy                  — Send ALL skill files + ALL tools every
+  #                             message. Instant rollback knob.
+  routing_mode: router_worker
+
+  # Maximum tool-call iterations per user message (safety guardrail).
+  max_iterations: 10
+
+  # Maximum conversation history turns sent to the LLM.
+  # Each turn is one user message + one assistant summary.
+  # Higher = better context resolution, but more tokens.
+  max_history_turns: 10
+
+  # Tools excluded from LLM tool selection.
+  # (chat is now exposed so the LLM can query the knowledge base)
+  excluded_tools: []
+
+  # Fallback behaviour when the LLM returns no tool call.
+  fallback: chat
+
+  # System prompt sent to the LLM before the skill file content.
+  # The LLM reads this + all skill files to understand what tools to call.
+  system_prompt: |
+    You are a Validation Agent orchestrator for the COBOL-to-C# migration
+    validation project.  Your job is to understand the user's request and
+    execute the correct operation by calling the appropriate tool.
+
+    CONVERSATION MEMORY:
+    You receive the recent conversation history between the user and
+    yourself.  Each assistant message in history contains:
+    - Which tool was executed and with what arguments
+    - The current session state (completed/pending/failed steps)
+    - Step-by-step status details for the baseline
+
+    Use conversation history to:
+    - Resolve references like "it", "that baseline", "this" → look up the
+      last baseline mentioned
+    - "now load" / "next step" → infer the baseline from history
+    - "do the same for X" → repeat the last operation with a new baseline
+    - Answer follow-up questions like "give me a summary", "what happened?",
+      "what's the status?" using the session state in history
+    - Provide intelligent summaries when asked — cite specific steps,
+      baselines, pass/fail results, and ticket numbers from history
+
+    If the user refers to a baseline mentioned earlier, extract it from
+    the history and pass it to the tool.  NEVER ask the user to repeat
+    a baseline name that already appeared in the conversation.
+
+    FOLLOW-UP QUESTIONS:
+    When the user asks about a previous operation (e.g. "give me a
+    summary", "what happened?", "what was the result?"), DO NOT call
+    any tool.  Respond with a helpful text answer using the execution
+    output and session state from the conversation history.  Be
+    specific — mention baseline names, step results, timing,
+    comparison outcomes, ticket numbers, and report paths from the
+    execution output in history.
+
+    KNOWLEDGE QUESTIONS:
+    When the user asks about what a program does, how COBOL/C# code
+    works, field mappings, DB2 tables, or any technical detail that
+    requires searching the codebase — call the "chat" tool with the
+    user's question.  The chat tool searches the knowledge base
+    (COBOL sources, C# translations, PR fixes) and returns an
+    informed answer.
+
+    HOW TO DECIDE (no tool call vs chat tool vs operation tool):
+    - "give me a summary of reporting" → TEXT (follow-up, answer
+      from execution output in history)
+    - "what does HPPL486P do?" → CHAT TOOL (knowledge question)
+    - "explain the COBOL logic" → CHAT TOOL (knowledge question)
+    - "reporting P02070-HPPL486P" → REPORTING TOOL (operation)
+    - "what's the status?" → TEXT if answerable from history,
+      otherwise STATUS TOOL
+
+    CRITICAL RULES:
+    1. When the user requests ANY operation (copy, load, run, branch,
+       unload, compare, report, finalize, validate, reporting, status,
+       reset, list, help), you MUST call the corresponding tool.
+       NEVER generate a text response instead of calling a tool.
+    2. Extract the baseline name (e.g. P02070-HPPL486P) from the user
+       message OR from conversation history and pass it as the "args"
+       parameter to the tool.
+    3. Respond with text (no tool call) ONLY for:
+       - Follow-up questions about previous operations that can be
+         answered from the execution output in conversation history
+       - Greetings and small talk
+    4. For questions about programs, code, COBOL, C#, or technical
+       details → call the "chat" tool (knowledge base search).
+    5. The skill files below describe every operation, its purpose, and
+       its arguments.  Use them to decide which tool to call.
+    6. If the user asks for multiple operations, call each tool in the
+       correct order (one at a time).
+    7. Baseline names follow the pattern: P{digits}-{LETTERS}{digits}{optional letter}
+       Examples: P02070-HPPL486P, P03085-J3021493, P02003-HPPL043P
+
+  # Tool schema template — auto-generated from operation catalog.
+  #   name        <- operation.handler
+  #   description <- operation.description
+  #   args        <- operation.args[0].usage (if args exist)
+  tool_schema:
+    arg_parameter_name: "args"
+    arg_description_fallback: "Argument for {name}"
+
+  # ── NL detection patterns ───────────────────────────────────────────
+  # Regexes used by services.orchestrator._looks_like_code_question to
+  # decide whether to route a no-tool-call LLM response to ChatAgent
+  # (which loads real COBOL/target source) vs streaming text. Switch
+  # client/project = edit these once instead of touching Python.
+  # Patterns are compiled case-insensitive.
+  patterns:
+    # Full baseline name e.g. P02070-HPPL494P / P03085-J3021493.
+    baseline: '\bP\d{4,6}-[A-Z]{1,6}\d{2,8}[A-Z]?\b'
+    # Bare program name e.g. HPPL486P / J3021493.
+    program: '\b([A-Z]{1,6}\d{2,8}[A-Z]?)\b'
+
+  # Domain / code keywords that force ChatAgent delegation. Combined
+  # into one regex at startup as: \b(<kw1>|<kw2>|...)\b (case-insensitive).
+  # Entries may already contain regex meta-characters (e.g. "c#",
+  # "\.cs\b") so they are inserted verbatim — NOT re.escape'd.
+  code_keywords:
+    - "cobol"
+    - "csharp"
+    - "c#"
+    - "\\.cs\\b"
+    - "\\.cbl\\b"
+    - "mismatch"
+    - "mismatching"
+    - "mis\\s*match"
+    - "compare"
+    - "comparison"
+    - "diff"
+    - "difference"
+    - "fix"
+    - "bug"
+    - "wrong"
+    - "issue"
+    - "error"
+    - "field"
+    - "mapping"
+    - "move\\s+to"
+    - "paragraph"
+    - "working[-\\s]storage"
+    - "pic\\s+[9x]"
+    - "snippet"
+    - "code"
+
+  # ── Router / Worker instruction blocks ──────────────────────────────
+  # Paths (relative to the prompts directory) of the markdown files
+  # holding the hard-coded text previously embedded in Python. If a
+  # file is missing the orchestrator falls back to a built-in default
+  # so dispatch never breaks.
+  router_instruction_file: "skills/orchestration/_router_instruction.md"
+  worker_instruction_file: "skills/orchestration/_worker_instruction.md"
+
