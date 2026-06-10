@@ -502,7 +502,22 @@ class AnalysisAgent:
 
 _analysis_agent: Optional[AnalysisAgent] = None
 
+# At top of file
+from tools.foundry_iq_tool import foundry_iq_lookup
 
+# Inside any reasoning method, before LLM call
+grounded_context = foundry_iq_lookup(
+    query="COBOL validation patterns",
+    context=cobol_code  # or whatever variable holds your input
+)
+
+# Then inject into your prompt
+prompt = f"""
+{your_existing_prompt}
+
+[Grounded Knowledge from Foundry IQ]
+{grounded_context}
+"""
 def get_analysis_agent() -> AnalysisAgent:
     """Get singleton instance of AnalysisAgent."""
     global _analysis_agent
