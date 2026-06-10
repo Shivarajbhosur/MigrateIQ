@@ -1,6 +1,5 @@
-<img width="166" height="28" alt="image" src="https://github.com/user-attachments/assets/41a88dcc-3af5-4085-944c-2e1bb2cffef6" /><div align="center">
-
 # 🚀 MigrateIQ
+
 ### The Reasoning AI That Validates Mainframe Modernization
 
 *Proves byte-level output parity between legacy COBOL and modernized code — in minutes, not months.*
@@ -14,9 +13,7 @@
 
 **🏆 Microsoft Agents League Hackathon 2026** • **🧠 Reasoning Agents Track** • **💡 Foundry IQ**
 
-[🎬 Demo](#-demo) • [🎯 Problem](#-the-problem) • [💡 Solution](#-the-solution) • [🧠 Reasoning](#-how-it-works--9-step-reasoning-workflow) • [💎 Foundry IQ](#-the-foundry-iq-advantage) • [🛡️ Reliability](#-reliability--safety) • [🚀 Get Started](#-get-started)
-
-</div>
+[🎬 Demo](#-demo) • [🎯 Problem](#-the-problem) • [💡 Solution](#-the-solution) • [🧠 How It Works](#-how-it-works---9-step-reasoning-workflow) • [💎 Foundry IQ](#-the-foundry-iq-advantage) • [🛡️ Reliability](#-reliability--safety) • [🚀 Get Started](#-get-started)
 
 ---
 
@@ -214,17 +211,19 @@ Microsoft Foundry Setup:
 🛡️ Reliability & Safety
 MigrateIQ is engineered for enterprise-grade trust — because mainframe modernization is mission-critical.
 
-🔒 Safety Patterns Built In
-   **Concern	        **                                        ** MigrateIQ Mitigation**
-🎭 LLM hallucination	                                  Foundry IQ grounded retrieval — every claim cited to source
-🔄 Non-determinism	                                      Fixed 9-step workflow with idempotent stages
-🔥 Cascading failures	                                  Per-step graceful fallbacks; failures isolated to agent boundary
-🔐 Secret leakage	                                      All credentials via .env (never committed); .env.example template
-📜 Auditability                                          Every reasoning step logged with inputs, outputs, citations
-🧪 Reproducibility	                                      Sessions persisted; replayable end-to-end
-🎯 Output verification	                                  Byte-level diff is deterministic ground truth — no "AI says it's fine"
-🌐 Multi-LLM resilience	                                  Auto-failover between primary and fallback LLM gateways
-🏢 Enterprise data safety	                              Code never leaves customer environment; on-prem deployable
+### Safety Patterns Built In
+
+| Concern | MigrateIQ Mitigation |
+|---|---|
+| 🎭 LLM hallucination | Foundry IQ grounded retrieval — every claim cited to source |
+| 🔄 Non-determinism | Fixed 9-step workflow with idempotent stages |
+| 🔥 Cascading failures | Per-step graceful fallbacks; failures isolated to agent boundary |
+| 🔐 Secret leakage | All credentials via `.env` (never committed); `.env.example` template |
+| 📜 Auditability | Every reasoning step logged with inputs, outputs, citations |
+| 🧪 Reproducibility | Sessions persisted; replayable end-to-end |
+| 🎯 Output verification | Byte-level diff is deterministic ground truth — no "AI says it's fine" |
+| 🌐 Multi-LLM resilience | Auto-failover between primary and fallback LLM gateways |
+| 🏢 Enterprise data safety | Code never leaves customer environment; on-prem deployable |
 
 
 🧠 Why Reasoning ≠ Hallucination Here
@@ -237,35 +236,25 @@ This separation of concerns is what makes MigrateIQ safe to use in regulated ind
 
 🏗️ Architecture
 
-┌──────────────────────────────────────────────────────────────────────┐
-│                    MigrateIQ System Architecture                     │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌────────────────────────────────────────────────────────────┐      │
-│  │  🎨  Conversational UI Layer (Chainlit)                    │      │
-│  │      • Streaming responses                                 │      │
-│  │      • Voice command interface (accessibility)             │      │
-│  │      • Multi-LLM runtime switching                         │      │
-│  └────────────────────────────────────────────────────────────┘      │
-│                              │                                       │
-│  ┌────────────────────────────────────────────────────────────┐      │
-│  │  🧠  Reasoning Orchestrator (9-step deterministic flow)    │      │
-│  └────────────────────────────────────────────────────────────┘      │
-│                              │                                       │
-│  ┌────────────────────────────────────────────────────────────┐      │
-│  │  🤖  Multi-Agent Layer                                     │      │
-│  │      DevOps  •  Runner  •  Compare  •  Report  •  Analysis │      │
-│  └────────────────────────────────────────────────────────────┘      │
-│                              │                                       │
-│  ┌────────────────────────────────────────────────────────────┐      │
-│  │  🔌  Integration Layer                                     │      │
-│  │      • Microsoft Foundry IQ (grounded retrieval)           │      │
-│  │      • Microsoft Foundry Agent (MigrateIQ-Validator)       │      │
-│  │      • Vector store (semantic similarity)                  │      │
-│  │      • LLM Gateway (multi-provider, auto-failover)         │      │
-│  │      • Source control connectors                           │      │
-│  └────────────────────────────────────────────────────────────┘      │
-└──────────────────────────────────────────────────────────────────────┘
+### MigrateIQ System Architecture
+
+- 🎨 Conversational UI Layer (Chainlit)
+  - Streaming responses
+  - Voice command interface (accessibility)
+  - Multi-LLM runtime switching
+
+- 🧠 Reasoning Orchestrator
+  - Deterministic 9-step flow
+
+- 🤖 Multi-Agent Layer
+  - DevOps, Runner, Compare, Report, Analysis
+
+- 🔌 Integration Layer
+  - Microsoft Foundry IQ (grounded retrieval)
+  - Microsoft Foundry Agent (MigrateIQ-Validator)
+  - Vector store (semantic similarity)
+  - LLM Gateway (multi-provider, auto-failover)
+  - Source control connectors
 
 📂 Project Structure
 MigrateIQ/
@@ -291,83 +280,105 @@ MigrateIQ/
 🎨 Operator Dashboard — Visual workflow with real-time progress
 
 
-🛠️ Tech Stack
-AI Platform:    Microsoft Foundry + Foundry IQ
-AI Search:      Azure AI Search (hybrid semantic + vector)
-Orchestration:  Custom multi-agent reasoning framework
-UI:             Chainlit with custom CSS/JS
-LLM Gateway:    Multi-provider (OpenAI, Anthropic, Google)
-Vector Store:   ChromaDB (complementary local search)
-Language:       Python 3.11+
-Extensibility:  Pluggable target language (C# / Java / Python)
+## 🛠️ Tech Stack
 
-🚀 Get Started
-Prerequisites
-Python 3.11+
-Azure subscription with Foundry & Foundry IQ access
-Git
+- AI Platform: Microsoft Foundry + Foundry IQ
+- AI Search: Azure AI Search (hybrid semantic + vector)
+- Orchestration: Custom multi-agent reasoning framework
+- UI: Chainlit with custom CSS/JS
+- LLM Gateway: Multi-provider (OpenAI, Anthropic, Google)
+- Vector Store: ChromaDB (complementary local search)
+- Language: Python 3.11+
+- Extensibility: Pluggable target language (C#, Java, Python)
+
+---
+
+## 🚀 Get Started
+
+### Prerequisites
+
+- Python 3.11+
+- Azure subscription with Foundry & Foundry IQ access
+- Git
+
+### Setup
+
+```bash
 # 1. Clone the repository
 git clone https://github.com/Shivarajbhosur/MigrateIQ.git
 cd MigrateIQ
 
-# 2. Create virtual environment
+# 2. Create a virtual environment
 python -m venv venv
-source venv/bin/activate    # Windows: venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
 # 4. Configure environment
-cp .env.example .env
+copy .env.example .env
 # Edit .env with your Azure / Foundry / LLM credentials
 
 # 5. Launch MigrateIQ
 chainlit run app.py
+```
 
-Configuration
-All credentials and paths are managed via .env (see .env.example for the full template). MigrateIQ supports:
+### Configuration
 
-✅ Multi-provider LLM gateway with automatic failover
-✅ Foundry IQ grounded retrieval
-✅ Custom validation tooling integration
-✅ Pluggable source control (Azure DevOps, GitHub, GitLab)
+All credentials and paths are managed via `.env` (see `.env.example` for the full template). MigrateIQ supports:
 
+- Multi-provider LLM gateway with automatic failover
+- Foundry IQ grounded retrieval
+- Custom validation tooling integration
+- Pluggable source control (Azure DevOps, GitHub, GitLab)
 
-🌐 Vision: A World Without Mainframe Lock-In
+---
+
+## 🌐 Vision: A World Without Mainframe Lock-In
+
 MigrateIQ is one piece of a larger vision — making mainframe modernization safe, predictable, and accessible to every enterprise on Earth.
 
 When validation becomes trivial:
 
-🏦 Banks can finally retire 50-year-old systems
-🏛️ Governments can serve citizens through modern apps
-🌱 Massive carbon savings as power-hungry mainframes decommission
-👨‍💻 The next generation of engineers can contribute (no COBOL expertise required)
-💰 Trillions of dollars unlocked from "modernization paralysis"
+- 🏦 Banks can finally retire 50-year-old systems
+- 🏛️ Governments can serve citizens through modern apps
+- 🌱 Massive carbon savings as power-hungry mainframes decommission
+- 👨‍💻 The next generation of engineers can contribute (no COBOL expertise required)
+- 💰 Trillions of dollars unlocked from "modernization paralysis"
+
 Validation is the bottleneck. MigrateIQ removes it.
 
-🗺️ Roadmap
-✅ v1.0 — 9-step reasoning workflow
-✅ v1.1 — Foundry IQ integration
-✅ v1.2 — Foundry Agent: MigrateIQ-Validator
-🚧 v2.0 — Multi-language targets (Java, Python, Go)
-🔜 v2.1 — Real-time PR validation in CI/CD
-🔮 v3.0 — Self-healing fix loop (auto-apply + verify)
+---
 
-👤 Author
+## 🗺️ Roadmap
+
+- ✅ v1.0 — 9-step reasoning workflow
+- ✅ v1.1 — Foundry IQ integration
+- ✅ v1.2 — Foundry Agent: MigrateIQ-Validator
+- 🚧 v2.0 — Multi-language targets (Java, Python, Go)
+- 🔜 v2.1 — Real-time PR validation in CI/CD
+- 🔮 v3.0 — Self-healing fix loop (auto-apply + verify)
+
+---
+
+## 👤 Author
+
 Shivaraj Hosur
 
-📄 License
+---
+
+## 📄 License
+
 MIT License — built openly to inspire the next generation of mainframe modernization tools.
 
-<div align="center">
-
-### ⭐ If MigrateIQ inspires your modernization journey, star this repo!
-
-**🏆 Built with ❤️ for Microsoft Agents League Hackathon 2026 🏆**
-
-*Making the world's legacy code safe to modernize — one validated program at a time.*
-
-Spanning **🧠 Reasoning Agents** • **💡 Foundry IQ** • **♿ Accessibility** tracks.
-
-</div>
+> ⭐ If MigrateIQ inspires your modernization journey, star this repo!
+>
+> **🏆 Built with ❤️ for Microsoft Agents League Hackathon 2026 🏆**
+>
+> *Making the world's legacy code safe to modernize — one validated program at a time.*
+>
+> Spanning **🧠 Reasoning Agents** • **💡 Foundry IQ** • **♿ Accessibility** tracks.
 
