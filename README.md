@@ -205,6 +205,7 @@ Microsoft Foundry Setup:
   Foundry Agent:   MigrateIQ-Validator (Published v2)
   Knowledge Base:  Connected via Foundry IQ
   Status:          ✅ Live
+```
 
 🤖 MigrateIQ-Validator is a published Foundry agent specialized in COBOL-to-modern code reasoning. It connects to Foundry IQ for grounded retrieval and powers the Analysis Agent.
 
@@ -234,9 +235,11 @@ The LLM only reasons about why outputs differ — it never decides whether they 
 Every fix suggestion is grounded — Foundry IQ requires a source citation before the Analysis Agent can recommend a change.
 This separation of concerns is what makes MigrateIQ safe to use in regulated industries (banking, insurance, government).
 
-🏗️ Architecture
+## 🏗️ Architecture
 
 ### MigrateIQ System Architecture
+
+![MigrateIQ Architecture Diagram](Docs/migrateiq-architecture.png)
 
 - 🎨 Conversational UI Layer (Chainlit)
   - Streaming responses
@@ -381,4 +384,3 @@ MIT License — built openly to inspire the next generation of mainframe moderni
 > *Making the world's legacy code safe to modernize — one validated program at a time.*
 >
 > Spanning **🧠 Reasoning Agents** • **💡 Foundry IQ** • **♿ Accessibility** tracks.
-
