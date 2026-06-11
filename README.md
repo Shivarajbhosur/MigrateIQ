@@ -19,7 +19,7 @@
 
 ## 🎬 Demo
 
-> 🎥 **[Full Demo Video →](#)** *(coming soon)*  
+> 🎥 **[Full Demo Video →](#)** *https://youtu.be/d6HZIv6LhI0*  
 > Live multi-agent validation • Foundry IQ grounded retrieval • Voice-driven workflow • Real-time fix suggestions with COBOL line citations.
 
 ---
