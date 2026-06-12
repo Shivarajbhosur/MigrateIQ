@@ -295,6 +295,18 @@ MigrateIQ/
 - Extensibility: Pluggable target language (C#, Java, Python)
 
 ---
+## 📋 Data & Privacy Notice
+
+MigrateIQ is designed to operate on customer-owned COBOL codebases within 
+secure enterprise environments. For this hackathon demo, MigrateIQ uses 
+**synthetic sample data** indexed in a **local ChromaDB vector store** 
+to showcase the validation workflow safely — as demonstrated in the demo video.
+
+In production deployment, MigrateIQ runs entirely within the customer's 
+tenant — code and data never leave the customer's secure boundary, and 
+Foundry IQ permission-aware retrieval ensures full compliance with 
+enterprise security and governance requirements.
+---
 
 ## 🚀 Get Started
 
